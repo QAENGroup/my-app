@@ -32,38 +32,24 @@ let store = {
             },
             sidebar:{}
         },
+
     _callSubscriber  () {
-        console.log('State changed')
+        console.log('State changed');
     },
 
     getState () {
         return this._state;
     },
+
     subscribe (observer) {
         this._callSubscriber = observer;
     },
 
-    _addPost () {
-        let newPost = {
-            id:5,
-            message: this._state.profilePage.newPostText,
-            likesCount:0
-        }
-        this._state.profilePage.posts.push(newPost)
-        this._state.profilePage.newPostText = ''
-        this._callSubscriber(this._state);
-    },
-    _updateNewPostText (newText) {
-
-        this._state.profilePage.newPostText = newText;
-        this._callSubscriber (this._state);
-    },
-
     dispatch(action) { // {type: 'ADD-POST' }
 
-        this._state.profilePage = profileReducer(this._state.profilePage,action)
-        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage,action)
-        this._state.sidebar = sidebarReducer(this._state.sidebar,action)
+        this._state.profilePage = profileReducer(this._state.profilePage,action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage,action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar,action);
         this._callSubscriber (this._state);
 
     }
