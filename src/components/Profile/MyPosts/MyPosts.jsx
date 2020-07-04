@@ -1,7 +1,6 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import { } from "../../../redux/store";
 
 const MyPosts = (props) => {
 
