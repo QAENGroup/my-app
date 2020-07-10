@@ -1,24 +1,16 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {
-    followAC,
-    setCurrentPageAC,
-    setTotalUsersCountAC,
-    setUsersAC,
-    toggleIsFetchingAC,
-    unfollowAC
-} from "../../redux/users-reducer";
+import {follow, setCurrentPage, setTotalUsersCount, setUsers, toggleIsFetching, unfollow} from "../../redux/users-reducer";
 import * as axios from "axios";
 import Users from "./Users";
-import preloader from "../../assets/images/preloader-4.svg"
 import Preloader from "../common/Preloader/preloader";
 
 class UsersContainer extends React.Component{
     componentDidMount() {
-        this.props.toggleIsFetchingAC(true);
+        this.props.toggleIsFetching(true);
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)// get запрос на сервак
             .then(response => {//ответ запроса
-                this.props.toggleIsFetchingAC(false);
+                this.props.toggleIsFetching(false);
                 this.props.setUsers(response.data.items);// выполняем коллбэк
                 this.props.setTotalUsersCount(response.data.totalCount);
             });
@@ -26,10 +18,10 @@ class UsersContainer extends React.Component{
 
     onPageChanged = (pageNumber) =>{
         this.props.setCurrentPage(pageNumber);
-        this.props.toggleIsFetchingAC(true);
+        this.props.toggleIsFetching(true);
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
             .then(response => {// get запрос на сервак
-                this.props.toggleIsFetchingAC(false);
+                this.props.toggleIsFetching(false);
                 this.props.setUsers(response.data.items);// выполняем коллбэк
             });
 
@@ -60,7 +52,7 @@ let mapStateToProps = (state) => { // отдаем users.jsx необходим�
     }
 }//принимаем state отдаем через пропсы данные users.jsx'у
 
-let mapDispatchToProps = (dispatch) => { // отдаем диспатч каллбэки
+/*let mapDispatchToProps = (dispatch) => {
     return {
         follow: (userId) => {
             dispatch(followAC(userId));
@@ -80,10 +72,9 @@ let mapDispatchToProps = (dispatch) => { // отдаем диспатч калл
         toggleIsFetchingAC: (isFetching) => {
             dispatch(toggleIsFetchingAC(isFetching));
         }
-
     }
-}
+}*/
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching})(UsersContainer);
 
 
